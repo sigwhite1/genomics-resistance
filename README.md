@@ -4,8 +4,6 @@ This repository contains data and analysis code associated with the manuscript:
 
 **"Genomic structure, not life-history strategy, predicts granulovirus resistance in *Plodia interpunctella*"**
 
-Signe White & Mike Boots, University of California Berkeley
-
 ---
 
 ## Repository structure
