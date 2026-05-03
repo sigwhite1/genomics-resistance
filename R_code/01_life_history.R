@@ -9,8 +9,8 @@
 #
 # Outputs:
 #   - Figure_1_boxplots.pdf         — pupal weight, dev time, growth rate
-#   - Figure_2_weight_vs_devtime.pdf — correlation between weight and dev time
-#   - FigureS8_LH_PC1_vs_LD50.pdf  — life-history PC1 vs LD50 (R = 0.22, non-sig)
+#   - FigureS1_weight_vs_devtime.pdf — correlation between weight and dev time
+#   - Figure_5_LH_PC1_vs_LD50.pdf  — life-history PC1 vs LD50 
 #   - FigureS9_LD50_vs_traits.pdf  — LD50 vs individual life-history traits
 #   - Console: PC1 loadings, ANOVA summaries, population means table
 #
@@ -28,9 +28,9 @@ library(MASS)
 library(tibble)
 
 # ── USER SETTINGS ─────────────────────────────────────────────────────────────
-lh_file  <- "~/Desktop/IL Genomics/Signe's IL Data/Pupal Weights, Days to Development, Growth Rates.csv"
-inf_file <- "~/Desktop/IL Genomics/Signe's IL Data/Infection_Growth.csv"
-out_dir  <- "~/Desktop/IL Genomics/figures"
+lh_file  <- "~/Desktop/Pupal Weights, Days to Development, Growth Rates.csv"
+inf_file <- "~/Desktop/Infection_Growth.csv"
+out_dir  <- "~/Desktop/figures"
 # ──────────────────────────────────────────────────────────────────────────────
 
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
@@ -50,7 +50,7 @@ POP_COLORS <- c(
 
 library(MASS)
 
-bin_file <- "~/Desktop/IL Genomics/Binomial Mortality Data.csv"
+bin_file <- "~/Desktop/Binomial Mortality Data.csv"
 bin_raw  <- read.csv(bin_file)
 
 populations <- c("IL-1","IL-2","IL-4","IL-7","IL-9","IL-10",
@@ -163,14 +163,14 @@ pop_means <- lh %>%
   left_join(ld50_means, by = "Population")
 
 # =============================================================================
-# 4. FIGURE 2 — Pupal weight vs. development time correlation
+# 4. FIGURE S1 — Pupal weight vs. development time correlation
 # =============================================================================
 
 cor_fig2 <- cor.test(pop_means$Mean_Weight, pop_means$Mean_DevTime)
 r_fig2   <- round(cor_fig2$estimate, 2)
 p_fig2   <- signif(cor_fig2$p.value, 3)
 
-fig2 <- ggplot(pop_means, aes(x=Mean_DevTime, y=Mean_Weight)) +
+figs1 <- ggplot(pop_means, aes(x=Mean_DevTime, y=Mean_Weight)) +
   geom_smooth(method="lm", color="black", linewidth=0.8, se=TRUE, fill="grey85") +
   geom_errorbar(data=filter(pop_means, Population != "Stock"),
                 aes(ymin=Mean_Weight-SE_Weight, ymax=Mean_Weight+SE_Weight,
@@ -196,8 +196,8 @@ fig2 <- ggplot(pop_means, aes(x=Mean_DevTime, y=Mean_Weight)) +
   theme_minimal() +
   theme(panel.border=element_rect(color="black", fill=NA, linewidth=0.5))
 
-ggsave(file.path(out_dir, "Figure_2_weight_vs_devtime.pdf"), fig2, width=8, height=6)
-cat("Figure 2 saved.  r =", r_fig2, "  p =", p_fig2, "\n")
+ggsave(file.path(out_dir, "FigureS1_weight_vs_devtime.pdf"), fig2, width=8, height=6)
+cat("Figure S1 saved.  r =", r_fig2, "  p =", p_fig2, "\n")
 
 # =============================================================================
 # 5. LIFE-HISTORY PCA
@@ -224,36 +224,27 @@ pop_means <- pop_means %>%
   left_join(pc_scores %>% dplyr::select(Population, PC1, PC2), by="Population")
 
 # =============================================================================
-# 6. SUPPLEMENTARY FIGURE S8 — Life-history PC1 vs. LD50
-#    (weak, non-significant — R = 0.22, p = 0.499)
-#    NOTE: this is NOT the headline result. See 02_genomic_pca.R for Figure 5.
+# 6. FIGURE 5 — Life-history PC1 vs. LD50
 # =============================================================================
 
-fig8_data <- pop_means %>% filter(!is.na(Avg_LD50), !is.na(PC1), Population != "Stock")
-
-cor_lh <- cor.test(fig8_data$PC1, fig8_data$Avg_LD50)
-r_lh   <- round(cor_lh$estimate, 2)
-p_lh   <- signif(cor_lh$p.value, 3)
-
-cat("-- Life-history PC1 vs LD50 --\n")
-cat("r =", r_lh, "  p =", p_lh, "(non-significant)\n")
-
-fig_s8 <- ggplot(fig8_data, aes(x=PC1, y=Avg_LD50)) +
-  geom_smooth(method="lm", color="red", linetype="dashed",
-              se=FALSE, linewidth=0.9) +
-  geom_point(size=3.5, color="grey30") +
-  geom_text_repel(aes(label=Population), size=3, box.padding=0.4, seed=42) +
-  annotate("text", x=max(fig8_data$PC1)*0.7, y=max(fig8_data$Avg_LD50)*0.90,
-           label=paste0("r = ", r_lh, "\np = ", p_lh), hjust=0, size=4) +
-  labs(title="Life-history PC1 vs. LD50 (non-significant)",
+fig_5 <- ggplot(fig8_data, aes(x=PC1, y=Avg_LD50)) +
+  geom_smooth(method="lm", color="black", linetype="solid",
+              se=TRUE, fill="grey85", linewidth=0.9) +
+  geom_point(aes(fill=Avg_LD50), size=3.5, shape=21, stroke=0.5) +
+  scale_fill_gradientn(colors=c("steelblue","gold","firebrick"),
+                       guide="none") +
+  geom_text_repel(aes(label=Population), size=3, box.padding=0.4,
+                  seed=42, fontface="italic") +
+  annotate("text", x=Inf, y=-Inf,
+           label=paste0("r = ", r_lh, ",  p = ", p_lh),
+           hjust=1.1, vjust=-0.5, size=4) +
+  labs(title="Life-history PC1 vs. LD50",
        x=paste0("Life-history PC1 (", pct_var["PC1"], "% variance)"),
        y="LD50") +
-  theme_minimal() +
-  theme(panel.border=element_rect(color="black", fill=NA, linewidth=0.5))
+  theme_classic()
 
-ggsave(file.path(out_dir, "FigureS8_LH_PC1_vs_LD50.pdf"), fig_s8, width=7, height=6)
-cat("Supplementary Figure S8 saved.\n")
-
+ggsave(file.path(out_dir, "Figure_5_LH_PC1_vs_LD50.pdf"), fig_s8, width=7, height=6)
+cat("Figure 5 saved.\n")
 # =============================================================================
 # 7. SUPPLEMENTARY FIGURE S9 — LD50 vs. individual life-history traits
 # =============================================================================
@@ -277,9 +268,9 @@ make_cor_plot <- function(df, x_col, x_lab, title) {
 
 s9_data <- pop_means %>% filter(!is.na(Avg_LD50))
 
-s9a <- make_cor_plot(s6_data, "Mean_GR",     "Growth Rate (mg/day)",       "A) LD50 vs. Growth Rate")
-s9b <- make_cor_plot(s6_data, "Mean_Weight",  "Mean Pupal Weight (mg)",     "B) LD50 vs. Pupal Weight")
-s9c <- make_cor_plot(s6_data, "Mean_DevTime", "Mean Development Time (days)","C) LD50 vs. Development Time")
+s9a <- make_cor_plot(s9_data, "Mean_GR",     "Growth Rate (mg/day)",       "A) LD50 vs. Growth Rate")
+s9b <- make_cor_plot(s9_data, "Mean_Weight",  "Mean Pupal Weight (mg)",     "B) LD50 vs. Pupal Weight")
+s9c <- make_cor_plot(s9_data, "Mean_DevTime", "Mean Development Time (days)","C) LD50 vs. Development Time")
 
 fig_s9 <- s9a / s9b / s9c +
   plot_annotation(title="LD50 vs. Life-History Traits")
@@ -307,7 +298,7 @@ cat("\nAll figures saved to:", normalizePath(out_dir), "\n")
 cat("Script complete.\n")
 
 # =============================================================================
-# INFECTION ASSAY GLMs (Supplementary Tables S3, S4, S5)
+# INFECTION ASSAY GLMs (Supplementary Table S3)
 # =============================================================================
 
 inf_raw <- read.csv("~/Desktop/IL Genomics/Signe's IL Data/Infection_Growth.csv")
@@ -322,25 +313,8 @@ glm_logit <- glm(
   data   = inf_raw
 )
 
-# Negative binomial GLM
-glm_nb <- glm.nb(
-  Infection_Status ~ Log_Dose * Population + offset(log(Total_Exposed)),
-  data    = inf_raw,
-  control = glm.control(maxit = 100)
-)
-
-cat("\n── Supplementary Table S5: Model comparison ──\n")
-print(data.frame(
-  Model  = c("Binomial logistic GLM", "Negative binomial GLM"),
-  AIC    = round(c(AIC(glm_logit), AIC(glm_nb)), 1),
-  BIC    = round(c(BIC(glm_logit), BIC(glm_nb)), 1)
-))
-
 cat("\n── Supplementary Table S3: ANOVA — Binomial logistic GLM ──\n")
 print(anova(glm_logit, test = "Chisq"))
-
-cat("\n── Supplementary Table S4: ANOVA — Negative binomial GLM ──\n")
-print(anova(glm_nb, test = "Chisq"))
 
 # =============================================================================
 # 9. SUPPLEMENTARY FIGURES S4 - S6 — Dose-response visualisations
@@ -450,7 +424,7 @@ cat("Supplementary Figure S5 saved.\n")
 
 # ── Figure S6: Log-odds vs log10(dose), all populations overlaid ─────────────
 
-fig_s4 <- ggplot(pred_grid, aes(x=log10(Dose), y=log_odds, color=Population)) +
+fig_s6 <- ggplot(pred_grid, aes(x=log10(Dose), y=log_odds, color=Population)) +
   geom_line(linewidth=0.9) +
   scale_color_manual(values=POP_COLORS) +
   labs(
@@ -462,7 +436,7 @@ fig_s4 <- ggplot(pred_grid, aes(x=log10(Dose), y=log_odds, color=Population)) +
   theme_classic() +
   theme(legend.position="right")
 
-fig_s4
+fig_s6
 
 ggsave(file.path(out_dir, "FigureS6_logodds_dose.pdf"), fig_s6,
        width=10, height=6)
