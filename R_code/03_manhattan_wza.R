@@ -2,18 +2,14 @@
 # 03_manhattan_wza.R
 #
 # Purpose: Generate Manhattan plots, WZA scores, QQ plots, and top windows
-#          table for Figure 6. Runs on Savio (requires pre-computed data).
+#          table. Runs on Savio (requires pre-computed data).
 #
 # Prerequisites:
 #   - wza_cache/ folder populated (run parse_vcf_final.R on Savio first)
 #   - snprelate_1mb.csv generated (run parse_vcf_final.R on Savio first)
 #
-# Inputs (all on Savio):
-#   - /global/scratch/users/pswhite/analysis/wza_cache/*.txt
-#   - /global/scratch/users/pswhite/analysis/snprelate_1mb.csv
-#
 # Outputs:
-#   - /global/scratch/users/pswhite/analysis/figures.pdf
+#   - /global/scratch/users/analysis/figures.pdf
 #     Page 1: Combined Manhattan plot (PCA-LD50 + WZA)
 #     Page 2: QQ plots (PCA-LD50 + WZA)
 #     Page 3: Top 10 genomic windows table
@@ -25,14 +21,21 @@ library(patchwork)
 library(gridExtra)
 library(grid)
 
+
+manhattan_plot_data <- readRDS("~/Desktop/IL Genomics/manhattan_plot_data.rds")
+pca_plot_data       <- readRDS("~/Desktop/IL Genomics/pca_plot_data.rds")
+qq_wza              <- readRDS("~/Desktop/IL Genomics/qq_wza.rds")
+qq_pca_data         <- readRDS("~/Desktop/IL Genomics/qq_pca_data.rds")
+top10               <- readRDS("~/Desktop/IL Genomics/top10.rds")
+
 # ── USER SETTINGS ─────────────────────────────────────────────────────────────
-analysis_dir <- "/global/scratch/users/pswhite/analysis"
+analysis_dir <- "/global/scratch/users/analysis"
 out_pdf      <- file.path(analysis_dir, "figures.pdf")
 # ──────────────────────────────────────────────────────────────────────────────
 
 # LD50 values calculated in 01_life_history.R via MASS::dose.p
 # (do NOT hardcode here — run 01_life_history.R first, then scp the CSV to Savio)
-ld50_file <- "/global/scratch/users/pswhite/analysis/ld50_calculated.csv"
+ld50_file <- "/global/scratch/users/analysis/ld50_calculated.csv"
 if (!file.exists(ld50_file)) stop("ld50_calculated.csv not found. Upload from local Mac first.")
 ld50_table  <- read.csv(ld50_file)
 ld50_table  <- ld50_table[ld50_table$Population != "Stock", ]   # inbred lines only
