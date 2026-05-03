@@ -27,7 +27,7 @@ library(patchwork)
 out_dir <- "~/Desktop/IL Genomics/figures"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 # ── Load data independently ───────────────────────────────────────────────────
-lh_file <- "~/Desktop/IL Genomics/Signe's IL Data/Pupal Weights, Days to Development, Growth Rates.csv"
+lh_file <- "~/Desktop/IL Genomics/Pupal Weights, Days to Development, Growth Rates.csv"
 
 POP_ORDER <- c("IL-1","IL-2","IL-4","IL-7","IL-9","IL-10",
                "IL-14","IL-17","IL-19","IL-24","IL-29","IL-36","Stock")
