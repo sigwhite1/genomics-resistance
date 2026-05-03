@@ -65,7 +65,7 @@ Computationally intensive analyses (sliding-window PCA, WZA) were run on the Sav
 
 ## Genomic pipeline
 
-Upstream variant calling was performed on the Savio HPC cluster. Per-sample sorted VCF files were compressed and indexed using `bgzip` and `bcftools` v1.16, merged using `bcftools merge`, and filtered to coding sequence variants using `bedtools intersect` v2.31.0 against the *P. interpunctella* reference genome annotation (GCF_027563975.2). Sliding windows of 1 Mb with 500 kb steps were generated using `bedtools makewindows`. Runs of homozygosity were identified using `bcftools roh` v1.16. The upstream assembly and variant calling pipeline was performed by J. Lo (University of California, Berkeley).
+Upstream variant calling was performed on the Savio HPC cluster. Per-sample sorted VCF files were compressed and indexed using `bgzip` and `bcftools` v1.16, merged using `bcftools merge`, and filtered to coding sequence variants using `bedtools intersect` v2.31.0 against the *P. interpunctella* reference genome annotation (GCF_027563975.2). Sliding windows of 1 Mb with 500 kb steps were generated using `bedtools makewindows`. Runs of homozygosity were identified using `bcftools roh` v1.16.
 
 ---
 
