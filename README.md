@@ -1,8 +1,6 @@
-**"Genomic structure predicts antiviral resistance independently of life history in *Plodia interpunctella*"**
-
 This repository contains data and analysis code associated with the manuscript:
 
-**"Genomic structure, not life-history strategy, predicts granulovirus resistance in *Plodia interpunctella*"**
+**"Genomic structure predicts antiviral resistance independently of life history in *Plodia interpunctella*"**
 
 ---
 
