@@ -10,15 +10,19 @@ This repository contains data and analysis code associated with the manuscript:
 
 R scripts for all analyses reported in the manuscript, in order of execution:
 
-| Script | Description |
-|--------|-------------|
-| `01_life_history.R` | Life-history PCA, LD50 calculation, dose-response GLMs|
-| `02_genomic_pca.R` | Genomic PCA, neighbour-joining tree, PC1 vs LD50 correlation |
-| `wza_final.R` | Sliding-window PCA-LD50 correlation and Weighted Z-score Analysis (WZA) across 2,164 retained 250 kb windows. Run on Savio HPC. Outputs window-level results as CSV files for local plotting. |
-| `03_manhattan_wza_FINAL.R` | Local plotting script for Manhattan plots (Figure 4) and QQ plots (Figure S7), using the window-level results from `wza_final.R`. Run in RStudio. |
-| `run_enrichment.sh / enrichment_test.R` | Permutation test for immune-gene keyword enrichment among convergent windows (Table S6). |
-| `04_clustering.R` | K-means clustering of LD50 values |
-| `05_ROH_figure.R` | Runs of homozygosity analysis and figure |
+| Step | Script | Description |
+| ---- | ------ | ----------- |
+| 1 | `01_life_history.R` | Life-history PCA, LD50 calculation, dose-response GLMs |
+| 2 | `02_genomic_pca.R` | Genomic PCA, neighbour-joining tree, PC1 vs LD50 correlation |
+| 3a *(Savio)* | `wza_final.R` | Sliding-window PCA-LD50 correlation and Weighted Z-score Analysis (WZA) across 2,164 retained 250 kb windows. Outputs window-level results as CSV files for local plotting. |
+| 3b *(local)* | `03_manhattan_wza_FINAL.R` | Manhattan plots (Figure 4) and QQ plots (Figure S7), using the window-level results from `wza_final.R`. |
+| 3c | `run_enrichment.sh` / `enrichment_test.R` | Permutation test for immune-gene keyword enrichment among convergent windows (Table S6) |
+| 4 | `04_clustering.R` | K-means clustering of LD50 values |
+| 5 | `05_ROH_figure.R` | Runs of homozygosity analysis and figure |
+| 6a *(Savio)* | `genomewide_pca_v2.sh` | Genome-wide genomic PCA (glPca) for the CDS-vs-genome-wide robustness check (Reviewer 3). Outputs `genomewide_pca_scores.csv`, used for Figure S13. |
+| 6b *(local)* | `05_CDS_vs_genomewide_comparison.R` | Genome-wide neighbour-joining tree (Figure S2B) and Mantel tests comparing CDS-restricted vs. genome-wide genomic distance matrices, and each against LD50 (Reviewer 3, CDS-filtering response). |
+| 7a *(Savio)* | `pve_cdf_and_null_envelope.R` | Builds the observed PVE cumulative distribution from `joint_results_FINAL.csv` and a null envelope via 1,000 LD50 permutations. Outputs `pve_cdf_with_null_envelope.csv`. |
+| 7b *(local)* | `plot_pve_cdf_null_envelope.R` | Plots the PVE null-envelope figure (Figure S12) from the Savio output. |
 
 Scripts should be run in order. `01_life_history.R` must be run first as it generates `ld50_calculated.csv`, which is used by all subsequent scripts.
 
