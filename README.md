@@ -24,6 +24,8 @@ R scripts for all analyses reported in the manuscript, in order of execution:
 | 6b *(local)* | `05_CDS_vs_genomewide_comparison.R` | Genome-wide neighbour-joining tree (Figure S2B) and Mantel tests comparing CDS-restricted vs. genome-wide genomic distance matrices, and each against LD50 (Reviewer 3, CDS-filtering response). |
 | 7a *(Savio)* | `pve_cdf_and_null_envelope.R` | Builds the observed PVE cumulative distribution from `joint_results_FINAL.csv` and a null envelope via 1,000 LD50 permutations. Outputs `pve_cdf_with_null_envelope.csv`. |
 | 7b *(local)* | `plot_pve_cdf_null_envelope.R` | Plots the PVE null-envelope figure (Figure S12) from the Savio output. |
+| 8 | `cluster_assignments_ILs.R` | Tests whether genomic PC1 shows discrete substructure (Hartigan's dip test) versus continuous drift, and an exploratory clustering analysis (k-means WSS, Gaussian mixture model/BIC, silhouette) across all three retained PCs, addressing whether population structure inherited from an undocumented founder population could explain genomic PC1 (Reviewer 3). |
+| 9 | `eclosion_rate_analysis.R` | Calculates per-population eclosion rate from raw pupal-tracking data and tests whether it differs among inbred lines (chi-square) or correlates with resistance (Reviewer 2). |
 
 Scripts should be run in order. `01_life_history.R` must be run first as it generates `ld50_calculated.csv`, which is used by all subsequent scripts.
 
