@@ -18,6 +18,7 @@ R scripts for all analyses reported in the manuscript, in order of execution:
 | 3b *(Savio)* | `wza_final.R` | Sliding-window PCA-LD50 correlation and Weighted Z-score Analysis (WZA) across 2,164 retained 250 kb windows. Outputs window-level results as CSV files for local plotting. |
 | 3c *(local)* | `03_manhattan_wza_FINAL.R` | Manhattan plots (Figure 4) and QQ plots (Figure S7), using the window-level results from `wza_final.R`. |
 | 3d | `run_enrichment.sh` / `enrichment_test.R` | Permutation test for immune-gene keyword enrichment among convergent windows (Table S6) |
+| 3e | `pca_standardization_sensitivity.R` | Tests whether the genomic PC1-LD50 association is sensitive to PCA standardization convention (glPca default vs. allele-frequency-standardized, the EIGENSTRAT/smartpca convention), on a marker set matched to an independent SNPRelate run. Addresses Reviewer 1's methodological-sensitivity comment. |
 | 4 | `04_clustering.R` | K-means clustering of LD50 values |
 | 5 | `05_ROH_figure.R` | Runs of homozygosity analysis and figure |
 | 6a *(Savio)* | `genomewide_pca_v2.sh` | Genome-wide genomic PCA (glPca) for the CDS-vs-genome-wide robustness check (Reviewer 3). Outputs `genomewide_pca_scores.csv`, used for Figure S13. |
