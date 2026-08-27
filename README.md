@@ -80,7 +80,11 @@ Computationally intensive analyses (sliding-window PCA, WZA) were run on the Sav
 
 ## Genomic pipeline
 
-Upstream variant calling was performed on the Savio HPC cluster. Per-sample sorted VCF files were compressed and indexed using `bgzip` and `bcftools` v1.16, merged using `bcftools merge`, and filtered to coding sequence variants using `bedtools intersect` v2.31.0 against the *P. interpunctella* reference genome annotation (GCF_027563975.2). Sliding windows of 250 kb with 125 kb steps were generated using bedtools makewindows, following empirical estimation of linkage disequilibrium decay across the genome; 2,164 of 2,232 candidate windows were retained after excluding windows with fewer than 100 variants. Runs of homozygosity were identified using `bcftools roh` v1.16.
+Upstream variant calling was performed on the Savio HPC cluster. Per-sample BAM files were processed with `bcftools mpileup` followed by `bcftools call -mv` (bcftools v1.6), using default parameters at both steps (no explicit depth, mapping-quality, or private-variant filter was applied). Per-sample VCFs were merged using `bcftools merge` (bcftools v1.16) into a single genome-wide, multi-sample VCF.
+
+For the primary (CDS-restricted) analyses, this merged VCF was filtered to coding sequence variants using `bedtools intersect` v2.31.0 against the *P. interpunctella* reference genome annotation (Childers et al., 2021; GCF_027563975.1). Sliding windows of 250 kb with 125 kb steps were generated using `bedtools makewindows`, following empirical estimation of linkage disequilibrium decay across the genome; 2,164 of 2,232 candidate windows were retained after excluding windows with fewer than 100 variants. Runs of homozygosity were identified from both the CDS-restricted and genome-wide VCFs using `bcftools roh` v1.16.
+
+As a robustness check (see manuscript, "Population genomic structure"), the same distance-matrix, neighbour-joining tree, and PCA analyses were repeated on the unfiltered, genome-wide merged VCF, retaining only sites with a complete genotype call across all 12 inbred lines.
 
 ---
 
