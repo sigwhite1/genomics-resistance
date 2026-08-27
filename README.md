@@ -46,14 +46,19 @@ Input data files required to run the analysis scripts:
 | File | Description |
 |------|-------------|
 | `Pupal_Weights_Days_to_Development_Growth_Rates.csv` | Individual-level life-history measurements for all populations |
+| `Pupal_Weights_Data_II.xlsx` | Raw per-individual pupation and eclosion tracking data, used to calculate eclosion rate by population (Table S4) |
 | `Infection_Growth.csv` | Individual-level infection assay data |
 | `Binomial_Mortality_Data.csv` | Binary infection outcomes by dose and population, used for LD50 calculation |
 | `ld50_calculated.csv` | Population-mean LD50 values calculated by `01_life_history.R` |
-| `stock_pca_results.csv` | Genomic PCA scores for inbred lines and stock population |
-| `genetic_distances.csv` | Pairwise genetic distance matrix among inbred lines |
-| `snprelate_1mb.csv` | Per-window genomic PC1 scores for all inbred lines, used for Manhattan plot and WZA analyses |
+| `stock_pca_results.csv` | Genomic PCA scores from the combined stock+inbred PCA (`dudi.pca`), used for Figure 2 only. **Not** the source for genomic PC1/PC2 as used in Figure 3, the headline PC1-LD50 result, or any inbred-only analysis — see `cds_pca_scores_FRESH.csv` for that. |
+| `cds_pca_scores_FRESH.csv` | CDS-restricted, inbred-only genomic PCA scores (PC1-PC3), independently verified from a fresh VCF read. The correct source for genomic PC1/PC2 throughout the manuscript. |
+| `genetic_distances.csv` | Pairwise genetic distance matrix among inbred lines (CDS-restricted; Euclidean distance on genotype calls) |
+| `genomewide_pca_scores.csv` | Genome-wide genomic PCA scores (PC1-PC3), for the CDS-vs-genome-wide robustness check (Figure S13) |
+| `genetic_distances_genomewide_FILTERED.csv` | Genome-wide, complete-call-filtered pairwise genetic distance matrix (Figure S2B) |
 | `joint_results_FINAL.csv` | PVE and WZA scores and ranks for all 2,164 retained genomic windows |
 | `convergent_windows_FINAL.csv` | Convergent windows meeting the joint top-1%/2% PVE/WZA criterion (Table S5) |
+| `pve_cdf_with_null_envelope.csv` | Observed PVE cumulative distribution and null envelope from 1,000 LD50 permutations (Figure S12) |
+| `snprelate_1mb.csv` | **Superseded, not used by the current pipeline.** Per-window genomic PC1 scores from an earlier 1 Mb/500 kb sliding-window analysis (571 windows). Replaced by `joint_results_FINAL.csv` (2,164 retained 250 kb windows). Retained here for provenance only. |
 
 ---
 
