@@ -14,7 +14,7 @@ R scripts for all analyses reported in the manuscript, in order of execution:
 | ---- | ------ | ----------- |
 | 1 | `01_life_history.R` | Life-history PCA, LD50 calculation, dose-response GLMs |
 | 2 | `02_genomic_pca.R` | Genomic PCA, neighbour-joining tree, PC1 vs LD50 correlation |
-| 3a *(Savio)* | `parse_vcf_final.R` | Generates the `wza_cache/` folder of per-window SNP files required by `wza_final.R` |
+| 3a *(Savio)* | `parse_vcf_final_CORRECTED.R` | Generates the `wza_cache/` folder of per-window SNP files required by `wza_final.R` |
 | 3b *(Savio)* | `wza_final.R` | Sliding-window PCA-LD50 correlation and Weighted Z-score Analysis (WZA) across 2,164 retained 250 kb windows. Outputs window-level results as CSV files for local plotting. |
 | 3c *(local)* | `03_manhattan_wza_FINAL.R` | Manhattan plots (Figure 4) and QQ plots (Figure S7), using the window-level results from `wza_final.R`. |
 | 3d | `run_enrichment.sh` / `enrichment_test.R` | Permutation test for immune-gene keyword enrichment among convergent windows (Table S6) |
