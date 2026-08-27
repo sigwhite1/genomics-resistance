@@ -36,6 +36,7 @@ Scripts should be run in order. `01_life_history.R` must be run first as it gene
 #### Notes on `genomewide\_pca\_v2.sh` and `05\_CDS\_vs\_genomewide\_comparison.R`
 
 `genomewide_pca_v2.sh` (step 6a) requires `merged_all_samples.vcf.gz` and is a long-running job (submitted via `sbatch`, ~9-12 hours on `savio2_bigmem`). It writes `genomewide_pca_scores.csv`, used for Figure S13. Transfer this file, along with `genetic_distances_genomewide_FILTERED.csv` (from the genome-wide distance-matrix pipeline described in the Methods), to your local machine, then run `05_CDS_vs_genomewide_comparison.R` (step 6b) in RStudio to generate the genome-wide neighbour-joining tree (Figure S2B) and the Mantel tests reported in the Results and the response to Reviewer 3.
+
 ---
 
 ### `data/`
